@@ -1,4 +1,4 @@
-
+#lang racket
 (define (sqrt-iter guess x)
 
   (define (square x)
@@ -12,7 +12,7 @@
 
   (define (average x y)
     (/ (+ x y) 2))
-    
+
   (if (good-enough? guess x)
     guess
     (sqrt-iter (improve guess x) x)))
