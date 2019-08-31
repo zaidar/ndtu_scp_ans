@@ -1,54 +1,19 @@
-#lang racket 
-
-; (define (inc a) (+ a 1)) 
-; (define(cube-sum a inc b)
-;   (if(= a b) a
-;     (+ a (cube-sum (inc a) inc b))
-; ))(cube-sum 1 inc 10)
-
-(define (pi-sum a b)
-  (if (> a b)
-      0
-      (+ (/ 1.0 (* a (+ a 2))) (pi-sum (+ a 4) b))))
-      
-; (* 8 (pi-sum 1 1000))
-
-; (define (cube x)(* x x x))
-; (define (integral f a b dx)
-;   (define next (lambda() (+ a dx)))
+#lang racket
+(define (square n) (* n n n))
+(define (next n)
+  (if(= n 2) 
+    3
+    (+ n 2)
+))
+(define (smallest-divisor n)
+  (define (find-divisor n test-divisor)
+      (define (divides? a b) (= (remainder b a) 0))
+      (cond ((> (square test-divisor) n) n)
+            ((divides? test-divisor n) test-divisor)
+             (else (find-divisor n (next test-divisor)))))
   
-;   (define const (lambda()(+ a (/ dx 2))))
-  
-;   (if (= (/ a dx) b) 
-;     0
-;     (+ (cube (const) ) (integral f (next) b dx))))
- 
-;  (integral cube 0 1 0.01)
+  (find-divisor n 2))
 
-;1.30
-
-; (define (sum term a next b)
-;     (if (> a b)
-;         0
-        
-;         (+ (term a) (sum term (next a) next b))
-    
-; ))
-
-; (define (sum term a next b)
-;     (define (iter a result)
-;         (if (> a b)
-;             result
-;             (iter (next a) (+ result (term a)))))
-    
-;     (iter a 0))
-
-; (define (integral f a b dx)
-
-;     (define next (lambda(a) (+ a dx)))
-
-;     (define const(lambda()(+ a (/ dx 2.0))))
-
-;     (* (sum f (const) next b) dx))
-
-; (integral (lambda(x)(* x x x)) 0 1 0.01)
+ (smallest-divisor 199)
+ (smallest-divisor 1999)
+ (smallest-divisor 19999)

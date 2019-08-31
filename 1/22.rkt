@@ -1,7 +1,9 @@
 #lang racket 
 
-(define (some-f n)
-  (cond ((< n 3) n)
-        (else (+ (some-f (- n 1)) (some-f (- n 2)) (some-f (- n 3))))
-))
-(some-f 3)
+(define (Ackermanns-func x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+         (else (Acks (- x 1) (Acks x (- y 1))))
+)) 
+(Ackermanns-func 1 5)

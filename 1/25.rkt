@@ -1,8 +1,9 @@
-#lang racket 
-
-(define (gcd a b)
-  (if (= b 0)
-      a
-      (gcd b (remainder a b))))
-(remainder 24 16)
-; (gcd 16 24)
+#lang racket
+; (define (iter-tring-col)
+  ; (
+; ))
+(define (pask-tring n k) 
+  (cond ((= n 0) k)
+        (else (~a k '" "(pask-tring (- n 1) (+ k k)) '" " k ))
+))
+(pask-tring 5 1)

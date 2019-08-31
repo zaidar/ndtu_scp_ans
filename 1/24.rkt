@@ -1,10 +1,11 @@
 #lang racket
 
-(define (double a)(+ a a))
+(define (square x)(* x x))
 
-(define (* a b)
-  (cond ((= b 0) 0)
-        ((even? b) (+ (double a) (* a (- b 2))))
-         (else (+ a (* a (- b 1))))
-))
-(* 5 5)
+(define (expt b n)
+  (cond ((= n 0) 1)
+        ((even? n)(square (expt b (/ n 2))))
+         (else (* b (expt b (- n 1))))
+)) 
+; x^n = (x^2)^(n / 2)
+(expt 2 5)
