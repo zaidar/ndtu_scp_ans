@@ -1,1 +1,0 @@
-http://mngu2382.github.io/sicp/chapter1/01-exercise11.html
