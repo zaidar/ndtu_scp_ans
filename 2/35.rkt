@@ -1,61 +1,15 @@
-#lang racket
-(define empty-board '())
+#lang racket ;2.73
+(require racket/include)
+(include "defines.rkt")
 
-(define (adjoin-position row col board)
-    (cons (list row col) board))
+(define (deriv exp var) 
+  (cond ((number? exp) 0)
+    ((variable? exp) (if (same-variable? exp var) 1 0)) 
+    ((sum? exp)      (make-sum (deriv (addend exp) var) (deriv (augend exp) var)))
+    ((product? exp)  (make-sum
+                        (make-product (multiplier exp) (deriv (multiplicand exp) var))
+                        (make-product (deriv (multiplier exp) var) (multiplicand exp))))
+  ;<more rules can be added here> 
+  (else (error "unknown expression type -- DERIV" exp))))
 
-(define (row board)
-    (map car board))
-    
-(define (col board)
-    (map cadr board))
-    
-(define (safe? k board)
-    (define (member-test val seq)
-        (cond ((null? seq) true)
-              ((= val (car seq)) false)
-              (else (member-test val (cdr seq)))))
-    (define (comparison-test seq1 seq2)
-        (cond ((null? seq1) true)
-              ((= (car seq1) (car seq2)) false)
-              (else (comparison-test (cdr seq1) (cdr seq2)))))
-    (let ((rows (row board))
-          (cols (col board)))
-         (and (member-test (car rows) (cdr rows))
-              (member-test (car cols) (cdr cols))
-              (comparison-test (map (lambda (i) (abs (- i (car rows))))
-                                    (cdr rows))
-                               (map (lambda (i) (abs (- i (car cols))))
-                                    (cdr cols))))))
-(define (accumulate op initial sequence) 
-  (if (null? sequence) 
-   initial 
-   (op (car sequence) 
-     (accumulate op initial (cdr sequence))))) 
-
-(define (flatmap proc seq) 
-  (accumulate append '() (map proc seq)))
-
-(define (enumerate-interval low high)
-  (if (> low high)
-      '()
-      (cons low
-        (enumerate-interval (+ low 1) high))))
-  
-(define (queens board-size)
-    (define (queen-cols k)
-        (if (= k 0)
-            (list empty-board)
-            (filter
-             (lambda (positions) (safe? k positions))
-             (flatmap
-              (lambda (rest-of-queens)
-                  (map (lambda (new-row)
-                           (adjoin-position new-row
-                                            k
-                                            rest-of-queens))
-                       (enumerate-interval 1 board-size)))
-              (queen-cols (- k 1))))))
-    (queen-cols board-size))
-
-    (queens 5)
+(deriv '(* x (* x 1)) 0)

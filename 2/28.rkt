@@ -1,33 +1,29 @@
 #lang racket
 
-(define (make-interval a b)
-  (cons a b
-))
+; (define (cc amount coin-values)
+;   (cond ((= amount 0) 1)
+;         ((or (< amount 0 ) (no-more? coin-values)) 0)
+;         (else 
+;           (+ (cc amount (except-first-denomination coin-values))
+;              (cc (- amount (first-denomination coint-values)) coin-values)
+;         ))
+; ))
 
-(define (upper-bound x)
-    (max (car x) (cdr x)))
 
-(define (lower-bound x)
-    (min (car x) (cdr x)))
+; (define (count-change amount)
+;    (cc amount 5))
 
-(define (add-interval x y)
-      (make-interval 
-          (+ (lower-bound x) (lower-bound y))
-          (+ (upper-bound x) (upper-bound y))))
-  
-(define (mul-interval x y)
-  (let ((p1 (* (lower-bound x) (lower-bound y)))
-        (p2 (* (lower-bound x) (upper-bound y)))
-        (p3 (* (upper-bound x) (lower-bound y)))
-        (p4 (* (upper-bound x) (upper-bound y))))
-  (make-interval 
-    (min p1 p2 p3 p4)
-    (max p1 p2 p3 p4))
-))
-(define (div-interval x y)
-    (if (> (* (lower-bound y) (upper-bound y)) 0)
-        (mul-interval x
-                      (make-interval (/ 1.0 (upper-bound y))
-                                     (/ 1.0 (lower-bound y))))
-        (error "dividing by an interval containing zero" y)))
+; (define (cc amount kinds-of-coins)
+;   (cond ((= amount 0) 1)
+;     ((or (< amount 0) (= kinds-of-coins 0)) 0)
+;   (else (+ (cc amount (- kinds-of-coins 1))
+;            (cc (- amount (first-denomination kinds-of-coins))
+;      kinds-of-coins)))))
 
+; (define (first-denomination kinds-of-coins)
+;     (cond ((= kinds-of-coins 1) 1)
+;       ((= kinds-of-coins 2) 5)
+;       ((= kinds-of-coins 3) 10)
+;       ((= kinds-of-coins 4) 25)
+;       ((= kinds-of-coins 5) 50)))
+;   (count-change 2)

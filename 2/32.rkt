@@ -1,21 +1,29 @@
 #lang racket
 
 
-(define (square x )(* x x x) )
+(define (accumulate op initial sequence) 
+    (if (null? sequence) initial
+        (op 
+          (car sequence) 
+          (accumulate op initial (cdr sequence)))
+))
 
-(define (map proc items)
-  (if (null? items)
-    null
-    (cons (proc (car items))
-          (map proc (cdr items)))
-)); (map (lambda (x) (* x x)) (list 1 2 3 4))
+(define (flatmap proc seq) 
+    (accumulate append null (map proc seq)))
 
-(define (square-tree tree)
-    (map (lambda (subtree)
-             (if (pair? subtree)
-                 (square-tree subtree)
-                 (square subtree)))
-         tree))
+(define (remove item sequence) 
+    (filter 
+        (lambda (x) (not (= x item))) 
+        sequence))
 
-(define tree (list 1 2 3 4 5 6 7 8 9 10))
-(square-tree tree)
+(define (permutations s) 
+    (if (null? s) 
+        (list null)
+        (flatmap (lambda (x)
+          (map 
+            (lambda (p) (cons x p)) 
+            (permutations (remove x s)))) s
+        )
+  ))
+
+  (permutations (list 1 2 3))

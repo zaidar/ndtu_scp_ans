@@ -1,29 +1,21 @@
 #lang racket
 
-; (define (cc amount coin-values)
-;   (cond ((= amount 0) 1)
-;         ((or (< amount 0 ) (no-more? coin-values)) 0)
-;         (else 
-;           (+ (cc amount (except-first-denomination coin-values))
-;              (cc (- amount (first-denomination coint-values)) coin-values)
-;         ))
-; ))
 
+(define (square x )(* x x x) )
 
-; (define (count-change amount)
-;    (cc amount 5))
+(define (map proc items)
+  (if (null? items)
+    null
+    (cons (proc (car items))
+          (map proc (cdr items)))
+)); (map (lambda (x) (* x x)) (list 1 2 3 4))
 
-; (define (cc amount kinds-of-coins)
-;   (cond ((= amount 0) 1)
-;     ((or (< amount 0) (= kinds-of-coins 0)) 0)
-;   (else (+ (cc amount (- kinds-of-coins 1))
-;            (cc (- amount (first-denomination kinds-of-coins))
-;      kinds-of-coins)))))
+(define (square-tree tree)
+    (map (lambda (subtree)
+             (if (pair? subtree)
+                 (square-tree subtree)
+                 (square subtree)))
+         tree))
 
-; (define (first-denomination kinds-of-coins)
-;     (cond ((= kinds-of-coins 1) 1)
-;       ((= kinds-of-coins 2) 5)
-;       ((= kinds-of-coins 3) 10)
-;       ((= kinds-of-coins 4) 25)
-;       ((= kinds-of-coins 5) 50)))
-;   (count-change 2)
+(define tree (list 1 2 3 4 5 6 7 8 9 10))
+(square-tree tree)
